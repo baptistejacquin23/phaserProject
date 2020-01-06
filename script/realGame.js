@@ -52,4 +52,6 @@ function update() {
         paddle.body.velocity.x = 0;
     }
 
+    this.physics.world.collide(paddle, ball);
+
 }
