@@ -19,6 +19,10 @@ let paddle;
 let cursors;
 let ball;
 let ballVelocity = 350;
+let score = 0;
+let scoreText;
+let bestScore = 0;
+let bestScoreText;
 
 
 function preload() {
@@ -58,6 +62,9 @@ function create() {
         }
     }
 
+    scoreText = this.add.text(window.innerWidth - (window.innerWidth - 20), 46, 'Score: ' + score, {fontSize: '28px', fill: '#000'});
+    bestScoreText = this.add.text(window.innerWidth - (window.innerWidth - 20), 16, 'Best: ' + bestScore, {fontSize: '28px', fill: '#000'});
+
 }
 
 function update() {
@@ -72,9 +79,25 @@ function update() {
     this.physics.world.collide(paddle, ball);
     this.physics.add.collider(ball, this.bricks, hit, null, this);
 
+    if (this.bricks.getLength() === 0){
+        this.scene.restart();
+        ballVelocity += 50;
+    }
+    if (ball.y > paddle.y) {
+        this.scene.restart();
+
+        if (score > bestScore) {
+            bestScore = score;
+        }
+        score = 0;
+        ballVelocity = 350;
+    }
+
 
 }
 
 function hit(ball, brick) {
     brick.destroy();
+    score += 10;
+    scoreText.text = 'Score: ' + score;
 }
