@@ -24,6 +24,7 @@ let ballVelocity = 350;
 function preload() {
     this.load.image('paddle', 'assets/mexico.png');
     this.load.image('ball', 'assets/trump.png');
+    this.load.image('brick', 'assets/wall.png');
 }
 
 function create() {
@@ -41,6 +42,22 @@ function create() {
     ball.body.bounce.setTo(1);
     ball.body.collideWorldBounds = true;
 
+    this.bricks = this.add.group();
+
+    for (let i = 0; i < 20; i++) {
+        for (let j = 0; j < 4; j++) {
+            let brick = this.physics.add.sprite((window.innerWidth - window.innerWidth + 50) + i * 70, 100 + j * 35, 'brick');
+
+            brick.body.immovable = true;
+
+            if (brick.body.x > window.innerWidth) {
+                brick.destroy();
+            } else {
+                this.bricks.add(brick);
+            }
+        }
+    }
+
 }
 
 function update() {
@@ -53,5 +70,11 @@ function update() {
     }
 
     this.physics.world.collide(paddle, ball);
+    this.physics.add.collider(ball, this.bricks, hit, null, this);
 
+
+}
+
+function hit(ball, brick) {
+    brick.destroy();
 }
