@@ -7,6 +7,9 @@ let config = {
         create: create,
         update: update,
     },
+    audio: {
+        disableWebAudio: true
+    },
     physics: {
         default: 'arcade',
         arcade: {
@@ -31,6 +34,7 @@ function preload() {
     this.load.image('paddle', 'assets/mexico.png');
     this.load.image('ball', 'assets/trump.png');
     this.load.image('brick', 'assets/wall.png');
+    this.load.audio('break', 'sound/break.mp3')
 }
 
 function create() {
@@ -91,7 +95,7 @@ function update() {
         paddle.body.velocity.x = 0;
     }
 
-    this.physics.world.collide(paddle, ball);
+    this.physics.world.collide(paddle, ball, playSound);
     this.physics.add.collider(ball, this.bricks, hit, null, this);
 
     if (this.bricks.getLength() === 0){
@@ -113,4 +117,5 @@ function hit(ball, brick) {
     brick.destroy();
     score += 10;
     scoreText.text = 'Score: ' + score;
+    this.sound.play('break');
 }
