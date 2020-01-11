@@ -95,7 +95,7 @@ function update() {
         paddle.body.velocity.x = 0;
     }
 
-    this.physics.world.collide(paddle, ball, playSound);
+    this.physics.world.collide(paddle, ball);
     this.physics.add.collider(ball, this.bricks, hit, null, this);
 
     if (this.bricks.getLength() === 0){
